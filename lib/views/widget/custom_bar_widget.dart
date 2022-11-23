@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/about_me_view.dart';
-import '../screens/education_view.dart';
+import '../screens/rating_and_education_view.dart';
 import '../screens/experience_view.dart';
 import 'main_screen_up_container.dart';
 
@@ -60,7 +60,7 @@ class _ContainerBarState extends State<CustomBarWidget> {
         const SizedBox(height: 20),
         [
           const AboutMeView(),
-          ExperianceView(),
+          ExperienceView(),
           const EducationView(),
         ][selectedIndex]
       ],

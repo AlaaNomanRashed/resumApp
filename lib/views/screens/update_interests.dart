@@ -6,17 +6,20 @@ import '../../database/controller/interests_controllers.dart';
 import '../../models/interests_model.dart';
 import '../widget/my_button.dart';
 import '../widget/my_text_field.dart';
-class AddInterestsScreen extends StatefulWidget {
-  const AddInterestsScreen({Key? key}) : super(key: key);
+class UpdateInterestsScreen extends StatefulWidget {
+
+ final InterestsModel interest;
+
+  const UpdateInterestsScreen({Key? key, required this.interest}) : super(key: key);
   @override
-  State<AddInterestsScreen> createState() => _AddInterestsScreenState();
+  State<UpdateInterestsScreen> createState() => _UpdateInterestsScreenState();
 }
-class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHelper{
+class _UpdateInterestsScreenState extends State<UpdateInterestsScreen> with SnackBarHelper{
 
   late TextEditingController interestsEditingController;
   @override
   void initState() {
-    interestsEditingController = TextEditingController();
+    interestsEditingController = TextEditingController(text: widget.interest.interestsName);
     super.initState();
   }
   @override
@@ -32,7 +35,7 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Add New Interests',
+          'Update My Interests',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -53,7 +56,7 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Interest Name',
+                'Insert New Interests',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
@@ -63,7 +66,7 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
               const SizedBox(height: 8),
               MyTextField(
                 controller: interestsEditingController,
-                text: 'Interests Name',
+                text: 'Insert New Interests',
               ),
             ],
           ),
@@ -77,10 +80,9 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
         child: SizedBox(
           height: 43,
           child: MyButton(
-            text: 'Save',
+            text: 'Update',
             onPress: () async {
-              print('here 1');
-              await performCreateInterests();
+              await performUpdateInterests();
             },
             // loading: loading,
           ),
@@ -89,24 +91,20 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
     );
   }
 
-  Future<void> performCreateInterests() async {
+  Future<void> performUpdateInterests() async {
     if (checkData()) {
-      print('here 2');
-      await createInterests();
+      await UpdateInterests();
     }
   }
 
-  Future<void> createInterests() async {
+  Future<void> UpdateInterests() async {
     setState(() {
       loading = true;
     });
     try {
-      var status = await InterestsDbControllers().create(interest);
-      if (status > 0) {
-        var newInterests = await InterestsDbControllers().show(status);
-        if(newInterests != null){
-          Provider.of<CvProvider>(context, listen: false).createInterests(newInterests);
-        }
+      var status = await InterestsDbControllers().update(interest);
+      if (status) {
+        Provider.of<CvProvider>(context , listen: false).updateInterests(interest);
         showSnackBar(
           context,
           message: 'Skill Added Successfully!',
@@ -134,11 +132,11 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
 
   bool checkData() {
     if (interestsEditingController.text.isEmpty) {
-showSnackBar(
-    context,
-    message: 'Enter Your Interests ',
-    error: true
-);
+      showSnackBar(
+          context,
+          message: 'Enter Your Interests ',
+          error: true
+      );
       return false;
     }
     return true;

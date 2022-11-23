@@ -39,7 +39,7 @@ class DatabaseSettings {
         'skillName TEXT,'
         'percent TEXT NOT NULL'
         ')');
-    //جزئية الاستفادات في الواجهة الاولى
+    //جزئية الاهتمامات في الواجهة الاولى
     await db.execute('CREATE TABLE Interests ('
         'id INTEGER PRIMARY KEY,'
         ' interestsName TEXT '

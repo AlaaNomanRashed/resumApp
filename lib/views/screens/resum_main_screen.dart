@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resum_app_project/Providers/cv_provider.dart';
 import 'package:resum_app_project/database/controller/skills_controller.dart';
+import '../../database/controller/interests_controllers.dart';
 import '../widget/custom_bar_widget.dart';
 
 class ResumMainScreen extends StatefulWidget {
@@ -21,10 +22,23 @@ class _ResumMainScreenState extends State<ResumMainScreen> {
   Future<void> saveData() async {
     /// Skills
     var skills = await SkillsDbController().read();
-
     for (int i = 0; i < skills.length; i++) {
       Provider.of<CvProvider>(context, listen: false).addSkill(skills[i]);
     }
+
+    /// Interestes
+    var interests = await InterestsDbControllers().read();
+    for (int i = 0; i < interests.length; i++) {
+      Provider.of<CvProvider>(context, listen: false).createInterests(interests[i]);
+    }
+
+    /// Experience
+    var experience = await InterestsDbControllers().read();
+    for (int i = 0; i < experience.length; i++) {
+      Provider.of<CvProvider>(context, listen: false).createInterests(experience[i]);
+    }
+
+
   }
 
   @override

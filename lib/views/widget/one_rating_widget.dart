@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class RatingsWidget extends StatelessWidget {
-  const RatingsWidget({
-    Key? key,
-    required this.title,
-    required this.year,
+import '../../models/experience_model.dart';
+
+class OneRatingsWidget extends StatelessWidget {
+  const OneRatingsWidget({
+    Key? key, required this.experience,
   }) : super(key: key);
-  final String title;
-  final String year;
+
+ final ExperienceModel experience;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class RatingsWidget extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Text(
-              title,
+              '${experience.name}',
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -42,7 +41,7 @@ class RatingsWidget extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Text(
-              '$year',
+              '${experience.body}',
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,

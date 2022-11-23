@@ -2,8 +2,10 @@
 class Assets {
   Assets._();
 
-  static const String iconsAboutme = 'assets/icons/aboutme.png';
-  static const String iconsEducation = 'assets/icons/education.png';
-  static const String iconsExperience = 'assets/icons/experience.png';
+  static const String imagesEducation = 'assets/images/education.png';
+  static const String imagesExperience = 'assets/images/experience.png';
+  static const String imagesIntersts = 'assets/images/intersts.png';
+  static const String imagesNoSkill = 'assets/images/noSkill.png';
+  static const String imagesRating = 'assets/images/rating.png';
 
 }
