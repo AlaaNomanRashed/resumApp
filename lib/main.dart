@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:resum_app_project/Providers/cv_provider.dart';
 import 'package:resum_app_project/Shared%20Preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:resum_app_project/views/screens/resum_main_screen.dart';
+import 'Providers/lang_provider.dart';
 import 'database/db_settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Shared Preferences
-  await CacheData.sharedPreferencesInitialized();
+  await SharedPreferencesController().initSharedPreferences();
   // Database
   await DatabaseSettings().databaseInitialized();
 
@@ -23,6 +25,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<CvProvider>(
           create: (context) => CvProvider(),
         ),
+        ChangeNotifierProvider<LangProviders>(
+          create: (context) => LangProviders(),
+        ),
       ],
       child: MyMaterialApp(),
     );
@@ -36,9 +41,15 @@ class MyMaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ResumMainScreen(),
+      home: const ResumMainScreen(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: const [
+        Locale('ar'),
+        Locale('en'),
+      ],
+      locale: Locale(Provider.of<LangProviders>(context).lang_),
     );
   }
 }

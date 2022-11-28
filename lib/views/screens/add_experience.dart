@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:resum_app_project/Providers/cv_provider.dart';
 import 'package:resum_app_project/helpers/snackbar.dart';
 import 'package:resum_app_project/models/experience_model.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../database/controller/experience_controller.dart';
 import '../widget/my_button.dart';
 import '../widget/my_text_field.dart';
@@ -15,17 +15,13 @@ class AddExperience extends StatefulWidget {
   State<AddExperience> createState() => _AddExperienceState();
 }
 
-enum TypeOfExperience{
-  experience ,
-  rating ,
-  education
-}
+enum TypeOfExperience { experience, rating, education }
 
 class _AddExperienceState extends State<AddExperience> with SnackBarHelper {
   late TextEditingController nameEditingController;
   late TextEditingController bodyEditingController;
 
-  var selectedExperience = 'experience';
+  var selectedExperience = TypeOfExperience.experience;
 
   @override
   void initState() {
@@ -48,7 +44,7 @@ class _AddExperienceState extends State<AddExperience> with SnackBarHelper {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Add New Experiense',
+          'Add New Experience',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -91,14 +87,43 @@ class _AddExperienceState extends State<AddExperience> with SnackBarHelper {
                 ),
               ),
               const SizedBox(height: 8),
-              DropdownButton(
-                  items: ['experience', 'rating', 'education']
-                      .map((e) => DropdownMenuItem(value: e,child: Text('$e') ,))
+              Container (
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 1.4,
+                  ),
+                ),
+                child: DropdownButton<TypeOfExperience>(
+                  items: TypeOfExperience.values
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                              e == TypeOfExperience.experience
+                                  ? AppLocalizations.of(context)!.experience
+                                  : e == TypeOfExperience.rating
+                                  ? AppLocalizations.of(context)!.rating
+                                  : AppLocalizations.of(context)!.education
+                          ),
+                        ),
+                      )
                       .toList(),
+                  value: selectedExperience,
                   onChanged: (experienceSelected) {
-                 //selectedExperience = experienceSelected;
-                    ///
-                  }),
+                    setState(() {
+                      selectedExperience = experienceSelected!;
+                    });
+                  },
+                  underline: const SizedBox(),
+                  isExpanded: true,
+                  focusColor: Colors.transparent ,
+                ),
+              ),
               const SizedBox(height: 15),
               const Text(
                 'experience content',
@@ -113,7 +138,6 @@ class _AddExperienceState extends State<AddExperience> with SnackBarHelper {
                 controller: bodyEditingController,
                 text: 'experience content',
               ),
-
             ],
           ),
         ),
@@ -128,7 +152,7 @@ class _AddExperienceState extends State<AddExperience> with SnackBarHelper {
           child: MyButton(
             text: 'Save',
             onPress: () async {
-             await performCreateExperience();
+              await performCreateExperience();
             },
             loading: loading,
           ),
@@ -137,41 +161,41 @@ class _AddExperienceState extends State<AddExperience> with SnackBarHelper {
     );
   }
 
-  Future<void> performCreateExperience()async{
-    if(checkData()){
+  Future<void> performCreateExperience() async {
+    if (checkData()) {
       await createExperience();
     }
   }
 
-  Future<void> createExperience()async{
+  Future<void> createExperience() async {
     setState(() {
       loading = true;
     });
-  try {
-    var status = await ExperienceDbController().create(experienceModel);
-    if (status>0) {
-      var newExperience = await ExperienceDbController().show(status) ;
-      if(newExperience != null) {
-        Provider.of<CvProvider>(context , listen:false).createExperience(newExperience);
-      }
-    //  Provider.of<CvProvider>(context , listen:false).createExperience(experienceModel);
+    try {
+      var status = await ExperienceDbController().create(experienceModel);
+      if (status > 0) {
+        var newExperience = await ExperienceDbController().show(status);
+        if (newExperience != null) {
+          Provider.of<CvProvider>(context, listen: false)
+              .addExperience(newExperience);
+        }
 
-      showSnackBar(
-        context,
-        message: 'Experience Added Successfully!',
-        error: false,
-      );
-      Navigator.pop(context);
-    }  else{
-      showSnackBar(
-        context,
-        message: 'Error',
-        error: true,
-      );
+        showSnackBar(
+          context,
+          message: 'Experience Added Successfully!',
+          error: false,
+        );
+        Navigator.pop(context);
+      } else {
+        showSnackBar(
+          context,
+          message: 'Error',
+          error: true,
+        );
+      }
+    } catch (e) {
+      // TODO
     }
-  } catch (e) {
-    // TODO
-  }
     setState(() {
       loading = false;
     });
@@ -179,13 +203,15 @@ class _AddExperienceState extends State<AddExperience> with SnackBarHelper {
 
   ExperienceModel get experienceModel {
     ExperienceModel experience_ = ExperienceModel();
+
     experience_.name = nameEditingController.text;
+   experience_.type = selectedExperience.name;
     experience_.body = bodyEditingController.text;
     return experience_;
   }
 
-  bool checkData(){
-    if(nameEditingController.text.isEmpty){
+  bool checkData() {
+    if (nameEditingController.text.isEmpty) {
       showSnackBar(
         context,
         message: 'Enter Experience Name!',
@@ -193,15 +219,16 @@ class _AddExperienceState extends State<AddExperience> with SnackBarHelper {
       );
       return false;
     }
-    else if (bodyEditingController.text.isEmpty) {
-      showSnackBar(
-        context,
-        message: 'Enter Experience Percentage!',
-        error: true,
-      );
-      return false;
-    }
+
+    //else if (bodyEditingController.text.isEmpty) {
+    //   showSnackBar(
+    //     context,
+    //     message: 'Enter Experience Percentage!',
+    //     error: true,
+    //   );
+    //   return false;
+    //}
+
     return true;
   }
-
 }

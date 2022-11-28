@@ -60,7 +60,7 @@ class _ContainerBarState extends State<CustomBarWidget> {
         const SizedBox(height: 20),
         [
           const AboutMeView(),
-          ExperienceView(),
+          const ExperienceView(),
           const EducationView(),
         ][selectedIndex]
       ],

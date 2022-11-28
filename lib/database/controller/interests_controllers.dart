@@ -10,7 +10,7 @@ class InterestsDbControllers{
  Future<int> create(InterestsModel interestsModel) async {
   // تنشئ صف جديد في الداتابيس من المودل
   var topicsName = await _myDb.rawQuery(
-      'SELECT * FROM  Interests WHERE subject = "${interestsModel.interestsName}"');
+      'SELECT * FROM  Interests WHERE interestsName = "${interestsModel.interestsName}"');
   if (topicsName.isEmpty) {
    return await _myDb.insert("Interests", interestsModel.toMap());
   }

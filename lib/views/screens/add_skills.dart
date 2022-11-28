@@ -126,7 +126,8 @@ class _AddSkillsScreenState extends State<AddSkillsScreen> with SnackBarHelper {
       var status = await SkillsDbController().create(skill);
 
       if (status > 0) {
-        Provider.of<CvProvider>(context, listen: false).addSkill(skill);
+     var  newSkill  =  await SkillsDbController().show(status);
+        Provider.of<CvProvider>(context, listen: false).addSkill(newSkill!);
         showSnackBar(
           context,
           message: 'Skill Added Successfully!',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resum_app_project/Providers/cv_provider.dart';
 import 'package:resum_app_project/helpers/snackbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:resum_app_project/models/experience_model.dart';
 
 import '../../database/controller/experience_controller.dart';
@@ -24,7 +25,7 @@ class _UpdateExperienceState extends State<UpdateExperience>
   late TextEditingController nameEditingController;
   late TextEditingController bodyEditingController;
 
-  var selectedExperience = 'experience';
+ late var selectedExperience = TypeOfExperience.values.firstWhere((element) => element.name == widget.experience.type);
 
   @override
   void initState() {
@@ -47,7 +48,7 @@ class _UpdateExperienceState extends State<UpdateExperience>
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Add New Experiense',
+          'Add New Experience',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -90,17 +91,43 @@ class _UpdateExperienceState extends State<UpdateExperience>
                 ),
               ),
               const SizedBox(height: 8),
-              DropdownButton(
-                  items: ['experience', 'rating', 'education']
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 1.4,
+                  ),
+                ),
+                child: DropdownButton<TypeOfExperience>(
+                  items: TypeOfExperience.values
                       .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Text('$e'),
-                          ))
+                    value: e,
+                    child: Text(
+                        e == TypeOfExperience.experience
+                            ? AppLocalizations.of(context)!.experience
+                            : e == TypeOfExperience.rating
+                            ? AppLocalizations.of(context)!.rating
+                            : AppLocalizations.of(context)!.education
+                    ),
+                  ),
+                  )
                       .toList(),
+                  value: selectedExperience,
                   onChanged: (experienceSelected) {
-                    //selectedExperience = experienceSelected;
-                    ///
-                  }),
+                    setState(() {
+                      selectedExperience = experienceSelected!;
+                    });
+                  },
+                  underline: const SizedBox(),
+                  isExpanded: true,
+                  focusColor: Colors.transparent ,
+                ),
+              ),
               const SizedBox(height: 15),
               const Text(
                 'update my experience',
@@ -149,8 +176,8 @@ class _UpdateExperienceState extends State<UpdateExperience>
       loading = true;
     });
     try {
-      var status = await ExperienceDbController().create(experienceModel);
-      if (status == true) {
+      var status = await ExperienceDbController().update(experienceModel);
+      if (status) {
         Provider.of<CvProvider>(context, listen: false)
             .updateExperience(experienceModel);
         var newExperience =
@@ -179,7 +206,9 @@ class _UpdateExperienceState extends State<UpdateExperience>
 
   ExperienceModel get experienceModel {
     ExperienceModel experience_ = ExperienceModel();
+    experience_.id = widget.experience.id;
     experience_.name = nameEditingController.text;
+    experience_.type = selectedExperience.name;
     experience_.body = bodyEditingController.text;
     return experience_;
   }
@@ -192,14 +221,16 @@ class _UpdateExperienceState extends State<UpdateExperience>
         error: true,
       );
       return false;
-    } else if (bodyEditingController.text.isEmpty) {
-      showSnackBar(
-        context,
-        message: 'Enter Experience Percentage!',
-        error: true,
-      );
-      return false;
     }
+
+    // else if (bodyEditingController.text.isEmpty) {
+    //   showSnackBar(
+    //     context,
+    //     message: 'Enter Experience Percentage!',
+    //     error: true,
+    //   );
+    //   return false;
+    // }
     return true;
   }
 }

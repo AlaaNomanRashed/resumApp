@@ -60,7 +60,7 @@ class _OneSkillWidgetState extends State<OneSkillWidget> with SnackBarHelper {
                         onPressed: () async {
                           await deleteSkill();
                         },
-                        icon: Icon(Icons.delete))
+                        icon: const Icon(Icons.delete),),
                   ],
                 )
               ],
@@ -102,7 +102,7 @@ class _OneSkillWidgetState extends State<OneSkillWidget> with SnackBarHelper {
     var status = await SkillsDbController().delete(widget.skill.id);
     if (status) {
       Provider.of<CvProvider>(context, listen: false)
-          .deleteInterest(widget.skill.id);
+          .deleteSkill(widget.skill.id);
       showSnackBar(context, message: 'Delete is successfuly', error: false);
     } else {
       showSnackBar(context, message: 'Error in delete', error: true);

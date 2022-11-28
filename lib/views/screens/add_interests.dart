@@ -79,7 +79,6 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
           child: MyButton(
             text: 'Save',
             onPress: () async {
-              print('here 1');
               await performCreateInterests();
             },
             // loading: loading,
@@ -91,7 +90,6 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
 
   Future<void> performCreateInterests() async {
     if (checkData()) {
-      print('here 2');
       await createInterests();
     }
   }
@@ -105,7 +103,7 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
       if (status > 0) {
         var newInterests = await InterestsDbControllers().show(status);
         if(newInterests != null){
-          Provider.of<CvProvider>(context, listen: false).createInterests(newInterests);
+          Provider.of<CvProvider>(context, listen: false).addInterests(newInterests);
         }
         showSnackBar(
           context,
@@ -120,7 +118,13 @@ class _AddInterestsScreenState extends State<AddInterestsScreen> with SnackBarHe
           error: true,
         );
       }
-    } catch (e) {}
+    } catch (e) {
+      showSnackBar(
+        context,
+        message: e.toString(),
+        error: true,
+      );
+    }
     setState(() {
       loading = false;
     });

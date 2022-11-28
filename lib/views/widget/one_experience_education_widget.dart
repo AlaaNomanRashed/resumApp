@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resum_app_project/Providers/cv_provider.dart';
@@ -55,7 +57,7 @@ class _OneExperienceAndEducationWidgetState extends State<OneExperienceAndEducat
               height: 45,
               width: 45,
               decoration: BoxDecoration(
-                color: Colors.green,
+                color: color,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: const Icon(
@@ -68,7 +70,7 @@ class _OneExperienceAndEducationWidgetState extends State<OneExperienceAndEducat
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${widget.experience.name}',
+                  widget.experience.name,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 17,
@@ -77,7 +79,7 @@ class _OneExperienceAndEducationWidgetState extends State<OneExperienceAndEducat
                 ),
                 const SizedBox(height: 7.0),
                 Text(
-                  '${widget.experience.body}',
+                  widget.experience.body,
                   style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 15,
@@ -86,7 +88,7 @@ class _OneExperienceAndEducationWidgetState extends State<OneExperienceAndEducat
                 ),
               ],
             ),
-            const SizedBox(width: 15.0),
+           const Spacer(),
             IconButton(
                 onPressed: () async{
                   await deleteExperience();
@@ -118,4 +120,34 @@ class _OneExperienceAndEducationWidgetState extends State<OneExperienceAndEducat
     );
   }
   }
+
+  /// Random
+  Random random = Random();
+  Color get color{
+    return colors[random.nextInt(20)];
+  }
+
+List<Color> colors =[
+  Colors.red,
+  Colors.redAccent,
+  Colors.blue,
+  Colors.grey,
+  Colors.green,
+  Colors.orange,
+  Colors.teal,
+  Colors.deepPurple,
+  Colors.lightBlue,
+  Colors.yellowAccent,
+  Colors.pink,
+  Colors.deepOrange,
+  Colors.deepPurpleAccent,
+  Colors.purple,
+  Colors.deepOrangeAccent,
+  Colors.greenAccent ,
+  Colors.brown,
+  Colors.purpleAccent,
+  Colors.black12,
+  Colors.blueGrey,
+];
+
 }

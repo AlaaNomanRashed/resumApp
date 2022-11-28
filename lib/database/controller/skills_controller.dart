@@ -27,14 +27,15 @@ class SkillsDbController {
   Future<SkillsModel?> show(int id) async {
     // هاتلي صف واحد بس من خلال الid
     // idالعنصر اللي بمررلك ياه .. هاتلي ياه
-    var rowMap = await _myDb.rawQuery('SELECT * FROM OneSkill WHERE id = "$id"');
+    var rowMap =
+        await _myDb.rawQuery('SELECT * FROM OneSkill WHERE id = "$id"');
 
     return rowMap.isNotEmpty ? SkillsModel.fromMap(rowMap.first) : null;
   }
 
   Future<bool> update(SkillsModel skillsModel) async {
     var result = await _myDb.update(
-      'Skills',
+      'OneSkill',
       skillsModel.toMap(),
       where: 'id=?',
       whereArgs: [skillsModel.id],

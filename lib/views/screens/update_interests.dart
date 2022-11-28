@@ -126,6 +126,7 @@ class _UpdateInterestsScreenState extends State<UpdateInterestsScreen> with Snac
 
   InterestsModel get interest{
     InterestsModel interes_ = InterestsModel();
+    interes_.id = widget.interest.id;
     interes_.interestsName = interestsEditingController.text;
     return interes_ ;
   }

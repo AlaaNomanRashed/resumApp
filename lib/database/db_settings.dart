@@ -19,7 +19,7 @@ class DatabaseSettings {
   Future<void> databaseInitialized() async {
     try {
       Directory appDocDir = await getApplicationDocumentsDirectory();
-      String path = join(appDocDir.path, 'resume.sql ');
+      String path = join(appDocDir.path, 'resume3 .sql ');
 
       // temp (مؤقتة لحتى اتست)
       // await deleteDatabase(path);
@@ -49,7 +49,7 @@ class DatabaseSettings {
         'id INTEGER PRIMARY KEY,'
         'name TEXT NOT NULL,'
         'type TEXT NOT NULL,' // => Type (experience / rating / education)
-        'body Text'
+        ' body  Text'
         ')');
   }
 }

@@ -37,7 +37,7 @@ class CvProvider extends ChangeNotifier {
   }
 
   /// Create
-  void createInterests(InterestsModel interest) {
+  void addInterests(InterestsModel interest) {
     interests.add(interest);
     notifyListeners();
   }
@@ -60,7 +60,7 @@ class CvProvider extends ChangeNotifier {
     experiences = experience;
   }
   /// Create
-  void createExperience(ExperienceModel experience) {
+  void addExperience(ExperienceModel experience) {
     experiences.add(experience);
     notifyListeners();
   }

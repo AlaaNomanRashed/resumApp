@@ -27,29 +27,34 @@ class _OneInterestsWidgetState extends State<OneInterestsWidget> with SnackBarHe
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8 , vertical: 2),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            color: Colors.black.withOpacity(0.4)),
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.black.withOpacity(0.3)),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "${widget.interests}.interestsName",
-              style: const TextStyle(fontSize: 19),
+              widget.interests.interestsName,
+              style: const TextStyle(fontSize: 20),
             ),
-            IconButton(
-                onPressed: () async {
-                  await deleteIntrest();
-                },
-                icon: const Icon(Icons.delete))
-
+            const SizedBox(width: 10,),
+            InkWell(
+              onTap: ()async{
+                await deleteInterest();
+              },
+              child: const Icon(
+                Icons.delete,
+                size: 20,
+              ),
+            )
           ],
         ),
       ),
     );
   }
 
-  Future<void> deleteIntrest() async {
+  Future<void> deleteInterest() async {
     var status = await InterestsDbControllers().delete(widget.interests.id);
     if (status) {
       Provider.of<CvProvider>(context, listen: false)

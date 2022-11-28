@@ -18,7 +18,6 @@ class InterestsModel{
 // Take Model From View => Convert To Map(rowMap)
   Map<String , dynamic> toMap(){
     Map<String , dynamic> rowMap = <String , dynamic>{};
-    rowMap['id'] = id;
     rowMap['interestsName'] = interestsName;
     return rowMap;
   }

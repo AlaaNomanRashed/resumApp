@@ -1,37 +1,35 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CacheData {
-  static late SharedPreferences _sharedPreferences;
-  static sharedPreferencesInitialized() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
+enum SpKeys { lang, theme }
+
+class SharedPreferencesController {
+  static final SharedPreferencesController _sharedPrefControllerObj =
+      SharedPreferencesController._sharedPrefPrivateConstructor();
+
+  SharedPreferencesController._sharedPrefPrivateConstructor();
+
+  late SharedPreferences _sharedPrefLibObj;
+
+  factory SharedPreferencesController() {
+    return _sharedPrefControllerObj;
   }
 
-  static Future<bool?>? setData({required String key, dynamic value}) async {
-    if (value is int) {
-      await _sharedPreferences.setInt(key, value);
-      return true;
-    } else if (value is String) {
-      await _sharedPreferences.setString(key, value);
-      return true;
-    } else if (value is double) {
-      await _sharedPreferences.setDouble(key, value);
-      return true;
-    } else if (value is bool) {
-      await _sharedPreferences.setBool(key, value);
-      return true;
-    }
-    return false;
+  Future<void> initSharedPreferences() async {
+    _sharedPrefLibObj = await SharedPreferences.getInstance();
   }
 
-  static deleteItem({required String key}) {
-    _sharedPreferences.remove(key);
+  /// Language
+  Future<void> setLanguage(String language) async {
+    await _sharedPrefLibObj.setString(SpKeys.lang.name, language);
   }
 
-  static clearAllData({required String key}) {
-    _sharedPreferences.clear();
-  }
+  String get getLanguage =>
+      _sharedPrefLibObj.getString(SpKeys.lang.name) ?? 'en';
 
-  static dynamic getData({required String key}) {
-    return _sharedPreferences.get(key);
+  /// Theme
+  Future<void> setTheme(String theme) async {
+    await _sharedPrefLibObj.setString(SpKeys.theme.name, theme);
   }
+  String get getTheme =>
+      _sharedPrefLibObj.getString(SpKeys.theme.name) ?? 'isDark';
 }

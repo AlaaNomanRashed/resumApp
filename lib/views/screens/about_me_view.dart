@@ -61,29 +61,31 @@ class AboutMeView extends StatelessWidget {
                 color: Colors.black38,
               ),
               const SizedBox(height: 15),
-            Provider.of<CvProvider>(context).skills.isNotEmpty ?  ListView.builder(
-                shrinkWrap: true,
-                itemCount: Provider.of<CvProvider>(context).skills.length,
-                itemBuilder: (context, index) {
-                  return OneSkillWidget(
-                    skill: Provider.of<CvProvider>(context).skills[index],
-                  );
-                },
-              )
-                : Column(
-                  children: [
-                    Center(
-              child: Image.asset('assets/images/noSkill.png' , width: 150 , height: 150,),
-            ),
-                    Text(
-                      'NO ADDING SKILLS YET',
-                      style: TextStyle(
-                          color: Colors.black45,
-                          fontSize: 20
-                      ),
+              Provider.of<CvProvider>(context).skills.isNotEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: Provider.of<CvProvider>(context).skills.length,
+                      itemBuilder: (context, index) {
+                        return OneSkillWidget(
+                          skill: Provider.of<CvProvider>(context).skills[index],
+                        );
+                      },
                     )
-                  ],
-                )
+                  : Column(
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            'assets/images/noSkill.png',
+                            width: 150,
+                            height: 150,
+                          ),
+                        ),
+                        Text(
+                          'NO ADDING SKILLS YET',
+                          style: TextStyle(color: Colors.black45, fontSize: 20),
+                        )
+                      ],
+                    )
             ],
           ),
         ),
@@ -136,71 +138,71 @@ class AboutMeView extends StatelessWidget {
                 color: Colors.black38,
               ),
               const SizedBox(height: 15),
-          Provider.of<CvProvider>(context).interests.isNotEmpty ?   ListView.builder(
-                shrinkWrap: true,
-                itemCount: Provider.of<CvProvider>(context).interests.length,
-                itemBuilder: (context, index) {
-                  return OneInterestsWidget(
-                    interests: Provider.of<CvProvider>(context).interests[index],
-                  );
-                },
-              ) : Column(
-                children: [
-                  Center(
-            child: Image.asset('assets/images/intersts.png' , width: 150 , height: 150,),
-          ),
-                  Text(
-                    'NO ADDING INTERESTS YET',
-                    style: TextStyle(
-                        color: Colors.black45,
-                        fontSize: 20
-                    ),
-                  )
-                ],
-              )
-
+              Provider.of<CvProvider>(context).interests.isNotEmpty
+                  ? Wrap(
+                spacing: 10,
+                      runSpacing: 10,
+                      children: Provider.of<CvProvider>(context)
+                          .interests
+                          .map((interest) {
+                            return OneInterestsWidget(interests: interest,);
+                      }
+                      ).toList(),
+                    )
+                  : Column(
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            'assets/images/intersts.png',
+                            width: 150,
+                            height: 150,
+                          ),
+                        ),
+                        const Text(
+                          'NO ADDING INTERESTS YET',
+                          style: TextStyle(color: Colors.black45, fontSize: 20),
+                        ),
+                        const SizedBox(height: 15),
+                      ],
+                    )
             ],
           ),
         ),
-
         const SizedBox(height: 10),
         const Divider(
           height: 0,
           color: Colors.black38,
         ),
-        ElevatedButton.icon(
-            onPressed: (){
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context)=> AddExperience()
-                  )
-              );
-            },
-            icon: Icon(
-                Icons.star,
-              color: Colors.black,
-            ),
-            label: Text(
-                'Add your experinse',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            minimumSize: const Size(double.infinity, 43),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-              side: const BorderSide(
-                color: Colors.black,
-                width: 1.3,
-              ),
-            ),
-          ),
-        ),
+        // ElevatedButton.icon(
+        //   onPressed: () {
+        //     Navigator.of(context)
+        //         .push(MaterialPageRoute(builder: (context) => AddExperience()));
+        //   },
+        //   icon: Icon(
+        //     Icons.star,
+        //     color: Colors.black,
+        //   ),
+        //   label: Text(
+        //     'Add your experinse',
+        //     style: TextStyle(
+        //       color: Colors.black,
+        //       fontSize: 15,
+        //       fontWeight: FontWeight.w600,
+        //     ),
+        //   ),
+        //   style: ElevatedButton.styleFrom(
+        //     elevation: 0,
+        //     backgroundColor: Colors.transparent,
+        //     minimumSize: const Size(double.infinity, 43),
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(5),
+        //       side: const BorderSide(
+        //         color: Colors.black,
+        //         width: 1.3,
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

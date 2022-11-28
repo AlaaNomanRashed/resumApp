@@ -151,6 +151,7 @@ class _UpdateSkillsScreenState extends State<UpdateSkillsScreen> with SnackBarHe
 
   SkillsModel get skill {
     SkillsModel skill_ = SkillsModel();
+    skill_.id = widget.skill.id;
     skill_.skillName = skillNameEditingController.text;
     skill_.percent = percentageEditingController.text;
     return skill_;
